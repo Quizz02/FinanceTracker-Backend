@@ -1,7 +1,11 @@
 package com.grupofinanzas.financetrackerbackend.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "users")
 @Entity
@@ -20,6 +24,11 @@ public class User {
     private String password;
     @NotNull
     private String email;
+    @OneToMany(
+            cascade = {CascadeType.PERSIST,CascadeType.REMOVE},
+            fetch = FetchType.LAZY
+    )
+    private List<Cartera> Cartera = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -67,5 +76,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<com.grupofinanzas.financetrackerbackend.domain.model.Cartera> getCartera() {
+        return Cartera;
+    }
+
+    public void setCartera(List<com.grupofinanzas.financetrackerbackend.domain.model.Cartera> cartera) {
+        Cartera = cartera;
     }
 }
