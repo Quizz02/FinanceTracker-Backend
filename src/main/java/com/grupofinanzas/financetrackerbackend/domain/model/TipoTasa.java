@@ -5,9 +5,9 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(
-        name= "Tipo_Tasa"
+        name= "TipoTasa"
 )
-public class Tipo_Tasa {
+public class TipoTasa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

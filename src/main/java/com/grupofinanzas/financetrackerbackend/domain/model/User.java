@@ -7,13 +7,13 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "users")
 @Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long id;
+    private Long userId;
     @NotNull
     private String Name;
     @NotNull
@@ -25,17 +25,16 @@ public class User {
     @NotNull
     private String email;
     @OneToMany(
-            cascade = {CascadeType.PERSIST,CascadeType.REMOVE},
             fetch = FetchType.LAZY
     )
     private List<Cartera> Cartera = new ArrayList<>();
 
     public Long getId() {
-        return id;
+        return userId;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.userId = id;
     }
 
     public String getName() {

@@ -1,30 +1,28 @@
 package com.grupofinanzas.financetrackerbackend.domain.model;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import javax.persistence.*;
-import java.text.DateFormat;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(
-        name= " Factura"
+        name= "Factura"
 )
 public class Factura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-    private DateFormat fechaEmision;
-    private DateFormat fechaPago;
+    private Date fechaEmision;
+    private Date fechaPago;
     private String nombreEmisor;
     private Float valorNominal;
     private Float valorEntregado;
     private Float valorRecibido;
     private Float valorNeto;
     private Float retencion;
-    private Bool moneda;
+    private boolean moneda;
     private Float TEP;
     private Float TDP;
     private Float TCEA;
@@ -40,12 +38,12 @@ public class Factura {
             cascade = {CascadeType.PERSIST,CascadeType.REMOVE},
             fetch = FetchType.LAZY
     )
-    private List<Gasto_Final> Gasto_Final = new ArrayList<>();
+    private List<GastoFinal> GastoFinal = new ArrayList<>();
     @OneToMany(
             cascade = {CascadeType.PERSIST,CascadeType.REMOVE},
             fetch = FetchType.LAZY
     )
-    private List<Gasto_Inicial> Gasto_Iniciales = new ArrayList<>();
+    private List<GastoInicial> gasto_Iniciales = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -55,19 +53,19 @@ public class Factura {
         this.id = id;
     }
 
-    public DateFormat getFechaEmision() {
+    public Date getFechaEmision() {
         return fechaEmision;
     }
 
-    public void setFechaEmision(DateFormat fechaEmision) {
+    public void setFechaEmision(Date fechaEmision) {
         this.fechaEmision = fechaEmision;
     }
 
-    public DateFormat getFechaPago() {
+    public Date getFechaPago() {
         return fechaPago;
     }
 
-    public void setFechaPago(DateFormat fechaPago) {
+    public void setFechaPago(Date fechaPago) {
         this.fechaPago = fechaPago;
     }
 
@@ -119,11 +117,11 @@ public class Factura {
         this.retencion = retencion;
     }
 
-    public Bool getMoneda() {
+    public boolean getMoneda() {
         return moneda;
     }
 
-    public void setMoneda(Bool moneda) {
+    public void setMoneda(boolean moneda) {
         this.moneda = moneda;
     }
 
@@ -199,19 +197,19 @@ public class Factura {
         this.idtasa = idtasa;
     }
 
-    public List<com.grupofinanzas.financetrackerbackend.domain.model.Gasto_Final> getGasto_Final() {
-        return Gasto_Final;
+    public List<GastoFinal> getGasto_Final() {
+        return GastoFinal;
     }
 
-    public void setGasto_Final(List<com.grupofinanzas.financetrackerbackend.domain.model.Gasto_Final> gasto_Final) {
-        Gasto_Final = gasto_Final;
+    public void setGasto_Final(List<GastoFinal> gasto_Final) {
+        GastoFinal = gasto_Final;
     }
 
-    public List<Gasto_Inicial> getGasto_Iniciales() {
-        return Gasto_Iniciales;
+    public List<GastoInicial> getGasto_Iniciales() {
+        return gasto_Iniciales;
     }
 
-    public void setGasto_Iniciales(List<Gasto_Inicial> gasto_Iniciales) {
-        Gasto_Iniciales = gasto_Iniciales;
+    public void setGasto_Iniciales(List<GastoInicial> gasto_Iniciales) {
+        this.gasto_Iniciales = gasto_Iniciales;
     }
 }

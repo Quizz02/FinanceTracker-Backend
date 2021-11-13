@@ -4,10 +4,10 @@ import javax.persistence.*;
 
 @Entity
 @Table(
-        name= " Plazo_Tasa"
+        name= "PlazoTasa"
 )
 
-public class Plazo_Tasa {
+public class PlazoTasa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

@@ -1,35 +1,24 @@
 package com.grupofinanzas.financetrackerbackend.domain.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(
-        name= " Cartera"
+        name= "Cartera"
 )
 public class Cartera {
     @Id
-    @SequenceGenerator(
-            name="Cartera_sequence",
-            sequenceName = "Cartera_sequence",
-            allocationSize = 1
-
-    )
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY,
-            generator = "tienda_sequence"
-
-    )
-    @Column(
-            name="id",
-            nullable = false
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long idCartera;
 
-    @Column(
-            name="totalCostoInicial",
-            nullable = false
-    )
-    private Float totalCostoInicial;
+//    @Column(
+//            name="totalCostoInicial",
+//            nullable = false
+//    )
+//    private Float totalCostoInicial;
 
     @Column(
             name="totalCostoFinal",
@@ -43,23 +32,30 @@ public class Cartera {
     )
     private Float TCEA;
 
-    @Column(
-            name="TIR",
-            nullable = false
-    )
-    private Float TIR;
-    @ManyToOne
-    @JoinColumn(
-            name = "idUsuario",
-            nullable = false,
-            referencedColumnName ="id",
-            insertable = false,
-            updatable = false,
-            foreignKey = @ForeignKey(
-                    name="usuariodFK"
-            )
-    )
-    private User idUsuario;
+//    @Column(
+//            name="TIR",
+//            nullable = false
+//    )
+//    private Float TIR;
+    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(
+//            name = "idUsuario",
+//            nullable = false,
+//            referencedColumnName ="id",
+//            insertable = false,
+//            updatable = false,
+//            foreignKey = @ForeignKey(
+//                    name="usuariodFK"
+//            )
+//    )
+    private User userId;
+
+    @OneToMany
+    private List<Factura> facturas = new ArrayList<>();
+    @OneToMany
+    private List<ReciboHonorario> reciboHonorarios = new ArrayList<>();
+    @OneToMany
+    private List<Letra> letras = new ArrayList<>();
 
     public Long getIdCartera() {
         return idCartera;
@@ -69,13 +65,13 @@ public class Cartera {
         this.idCartera = idCartera;
     }
 
-    public Float getTotalCostoInicial() {
-        return totalCostoInicial;
-    }
+//    public Float getTotalCostoInicial() {
+//        return totalCostoInicial;
+//    }
 
-    public void setTotalCostoInicial(Float totalCostoInicial) {
-        this.totalCostoInicial = totalCostoInicial;
-    }
+//    public void setTotalCostoInicial(Float totalCostoInicial) {
+//        this.totalCostoInicial = totalCostoInicial;
+//    }
 
     public Float getTotalCostoFinal() {
         return totalCostoFinal;
@@ -93,19 +89,43 @@ public class Cartera {
         this.TCEA = TCEA;
     }
 
-    public Float getTIR() {
-        return TIR;
+//    public Float getTIR() {
+//        return TIR;
+//    }
+
+//    public void setTIR(Float TIR) {
+//        this.TIR = TIR;
+//    }
+
+    public User getUserId() {
+        return userId;
     }
 
-    public void setTIR(Float TIR) {
-        this.TIR = TIR;
+    public void setUserId(User idUsuario) {
+        this.userId = idUsuario;
     }
 
-    public User getIdUsuario() {
-        return idUsuario;
+    public List<Factura> getFacturas() {
+        return facturas;
     }
 
-    public void setIdUsuario(User idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setFacturas(List<Factura> facturas) {
+        this.facturas = facturas;
+    }
+
+    public List<ReciboHonorario> getReciboHonorarios() {
+        return reciboHonorarios;
+    }
+
+    public void setReciboHonorarios(List<ReciboHonorario> reciboHonorarios) {
+        this.reciboHonorarios = reciboHonorarios;
+    }
+
+    public List<Letra> getLetras() {
+        return letras;
+    }
+
+    public void setLetras(List<Letra> letras) {
+        this.letras = letras;
     }
 }
