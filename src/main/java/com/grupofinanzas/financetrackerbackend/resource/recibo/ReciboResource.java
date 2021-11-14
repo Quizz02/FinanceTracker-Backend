@@ -1,52 +1,25 @@
-package com.grupofinanzas.financetrackerbackend.domain.model;
+package com.grupofinanzas.financetrackerbackend.resource.recibo;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
 
-@Entity
-@Table(name = "Recibo_Honorario")
-@PrimaryKeyJoinColumn(name = "recibo_id")
-public class ReciboHonorario {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+public class ReciboResource {
     private Long id;
     private Date fechaEmision;
     private Date fechaPago;
     private String nombreEmisor;
     private Float totalRecibir;
-    private Float valorEntregado;//output
-    private Float valorRecibido;//output
-    private Float valorNeto;//output
+    private Float valorEntregado;
+    private Float valorRecibido;
+    private Float valorNeto;
     private Float retencion;
     private boolean moneda;
-    private Float TEP;//output
-    private Float TDP;//output
-    private Float TCEA;//output
-    private Integer diasTranscurridos;//calculo fechaemision y pago
-    private Float totalGastoInicial;//mismo que factura
-    private Float totalGastoFinal;//mismo que factura
-    private Float totalGastoDescontado;//ni idea de pa que sirve
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cartera_id", nullable = false)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private Cartera cartera;
-    @OneToOne
-    private Tasa tasa;
-    @OneToMany(
-            cascade = {CascadeType.PERSIST,CascadeType.REMOVE},
-            fetch = FetchType.LAZY
-    )
-    private List<GastoFinal> gastosFinales = new ArrayList<>();
-    @OneToMany(
-            cascade = {CascadeType.PERSIST,CascadeType.REMOVE},
-            fetch = FetchType.LAZY
-    )
-    private List<GastoInicial> gastosIniciales = new ArrayList<>();
+    private Float TEP;
+    private Float TDP;
+    private Float TCEA;
+    private Integer diasTranscurridos;
+    private Float totalGastoInicial;
+    private Float totalGastoFinal;
+    private Float totalGastoDescontado;
 
     public Long getId() {
         return id;
@@ -84,8 +57,8 @@ public class ReciboHonorario {
         return totalRecibir;
     }
 
-    public void setTotalRecibir(Float valorNominal) {
-        this.totalRecibir = valorNominal;
+    public void setTotalRecibir(Float totalRecibir) {
+        this.totalRecibir = totalRecibir;
     }
 
     public Float getValorEntregado() {
@@ -120,7 +93,7 @@ public class ReciboHonorario {
         this.retencion = retencion;
     }
 
-    public boolean getMoneda() {
+    public boolean isMoneda() {
         return moneda;
     }
 
@@ -156,8 +129,8 @@ public class ReciboHonorario {
         return diasTranscurridos;
     }
 
-    public void setDiasTranscurridos(Integer dias) {
-        this.diasTranscurridos = dias;
+    public void setDiasTranscurridos(Integer diasTranscurridos) {
+        this.diasTranscurridos = diasTranscurridos;
     }
 
     public Float getTotalGastoInicial() {
@@ -180,40 +153,7 @@ public class ReciboHonorario {
         return totalGastoDescontado;
     }
 
-    public void setTotalGastoDescontado(Float totalGastoDescontada) {
-        this.totalGastoDescontado = totalGastoDescontada;
+    public void setTotalGastoDescontado(Float totalGastoDescontado) {
+        this.totalGastoDescontado = totalGastoDescontado;
     }
-
-    public Cartera getCartera() {
-        return cartera;
-    }
-
-    public void setCartera(Cartera idcartera) {
-        this.cartera = idcartera;
-    }
-
-    public Tasa getTasa() {
-        return tasa;
-    }
-
-    public void setTasa(Tasa idtasa) {
-        this.tasa = idtasa;
-    }
-
-    public List<GastoFinal> getGasto_Final() {
-        return gastosFinales;
-    }
-
-    public void setGasto_Final(List<GastoFinal> gasto_Final) {
-        gastosFinales = gasto_Final;
-    }
-
-    public List<GastoInicial> getGastosIniciales() {
-        return gastosIniciales;
-    }
-
-    public void setGastosIniciales(List<GastoInicial> gasto_Iniciales) {
-        this.gastosIniciales = gasto_Iniciales;
-    }
-
 }

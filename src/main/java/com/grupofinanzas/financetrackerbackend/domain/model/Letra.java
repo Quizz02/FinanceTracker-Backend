@@ -15,22 +15,22 @@ public class Letra {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-    private Date fechaEmision;
-    private Date fechaPago;
+    private Date fechaGiro;
+    private Date fechaVencimiento;
     private String nombreEmisor;
-    private Float valorNominal;//output
+    private Float valorNominal;
     private Float valorEntregado;//output
     private Float valorRecibido;//output
     private Float valorNeto;//output
     private Float retencion;
     private boolean moneda;
-    private Float TEP;
-    private Float TDP;
+    private Float TEP;//output
+    private Float TDP;//output
     private Float TCEA;//output
     private Integer diasTranscurridos; //calculo fechaemision y pago
     private Float totalGastoInicial;//mismo que factura
     private Float totalGastoFinal;//mismo que factura
-    private Float totalGastoDescontada;//nose que es esto xd
+    private Float totalGastoDescontado;//nose que es esto xd
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cartera_id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -56,20 +56,20 @@ public class Letra {
         this.id = id;
     }
 
-    public Date getFechaEmision() {
-        return fechaEmision;
+    public Date getFechaGiro() {
+        return fechaGiro;
     }
 
-    public void setFechaEmision(Date fechaEmision) {
-        this.fechaEmision = fechaEmision;
+    public void setFechaGiro(Date fechaEmision) {
+        this.fechaGiro = fechaEmision;
     }
 
-    public Date getFechaPago() {
-        return fechaPago;
+    public Date getFechaVencimiento() {
+        return fechaVencimiento;
     }
 
-    public void setFechaPago(Date fechaPago) {
-        this.fechaPago = fechaPago;
+    public void setFechaVencimiento(Date fechaPago) {
+        this.fechaVencimiento = fechaPago;
     }
 
     public String getNombreEmisor() {
@@ -176,12 +176,12 @@ public class Letra {
         this.totalGastoFinal = totalGastoFinal;
     }
 
-    public Float getTotalGastoDescontada() {
-        return totalGastoDescontada;
+    public Float getTotalGastoDescontado() {
+        return totalGastoDescontado;
     }
 
-    public void setTotalGastoDescontada(Float totalGastoDescontada) {
-        this.totalGastoDescontada = totalGastoDescontada;
+    public void setTotalGastoDescontado(Float totalGastoDescontada) {
+        this.totalGastoDescontado = totalGastoDescontada;
     }
 
     public Cartera getCartera() {
@@ -214,5 +214,13 @@ public class Letra {
 
     public void setGastosIniciales(List<GastoInicial> gasto_Iniciales) {
         this.gastosIniciales = gasto_Iniciales;
+    }
+
+    public List<GastoFinal> getGastosFinales() {
+        return gastosFinales;
+    }
+
+    public void setGastosFinales(List<GastoFinal> gastosFinales) {
+        this.gastosFinales = gastosFinales;
     }
 }
