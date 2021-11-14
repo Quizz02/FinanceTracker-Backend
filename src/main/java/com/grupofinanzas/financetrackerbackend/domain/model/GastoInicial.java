@@ -1,14 +1,12 @@
 package com.grupofinanzas.financetrackerbackend.domain.model;
 
-import lombok.*;
-
 import javax.persistence.*;
 
 @Entity
 @Table(
         name="categoria"
 )
-public class Gasto_Inicial {
+public class GastoInicial {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "id", nullable = false)
@@ -20,7 +18,7 @@ public class Gasto_Inicial {
         @ManyToOne
         private Letra idLetra;
         @ManyToOne
-        private Recibo_Honorario idrecibo;
+        private ReciboHonorario idrecibo;
 
         public Long getId() {
                 return id;
@@ -62,11 +60,11 @@ public class Gasto_Inicial {
                 this.idLetra = idLetra;
         }
 
-        public Recibo_Honorario getIdrecibo() {
+        public ReciboHonorario getIdrecibo() {
                 return idrecibo;
         }
 
-        public void setIdrecibo(Recibo_Honorario idrecibo) {
+        public void setIdrecibo(ReciboHonorario idrecibo) {
                 this.idrecibo = idrecibo;
         }
 }

@@ -7,8 +7,9 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "users")
 @Entity
+@Table(name = "users")
+@PrimaryKeyJoinColumn(name = "user_id")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +26,6 @@ public class User {
     @NotNull
     private String email;
     @OneToMany(
-            cascade = {CascadeType.PERSIST,CascadeType.REMOVE},
             fetch = FetchType.LAZY
     )
     private List<Cartera> Cartera = new ArrayList<>();

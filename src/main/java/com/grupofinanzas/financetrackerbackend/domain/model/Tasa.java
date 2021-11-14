@@ -1,11 +1,6 @@
 package com.grupofinanzas.financetrackerbackend.domain.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -22,9 +17,9 @@ public class Tasa {
     private Integer diasAnio;
     private Float valor; /*valor de la tasa*/
     @OneToOne
-    private  Plazo_Tasa idPlazoTasa;
+    private PlazoTasa idPlazoTasa;
     @OneToOne
-    private  Tipo_Tasa idTipoTasa;
+    private TipoTasa idTipoTasa;
 
     public Long getId() {
         return id;
@@ -58,19 +53,19 @@ public class Tasa {
         this.valor = valor;
     }
 
-    public Plazo_Tasa getIdPlazoTasa() {
+    public PlazoTasa getIdPlazoTasa() {
         return idPlazoTasa;
     }
 
-    public void setIdPlazoTasa(Plazo_Tasa idPlazoTasa) {
+    public void setIdPlazoTasa(PlazoTasa idPlazoTasa) {
         this.idPlazoTasa = idPlazoTasa;
     }
 
-    public Tipo_Tasa getIdTipoTasa() {
+    public TipoTasa getIdTipoTasa() {
         return idTipoTasa;
     }
 
-    public void setIdTipoTasa(Tipo_Tasa idTipoTasa) {
+    public void setIdTipoTasa(TipoTasa idTipoTasa) {
         this.idTipoTasa = idTipoTasa;
     }
 }
