@@ -1,13 +1,15 @@
 package com.grupofinanzas.financetrackerbackend.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(
-        name= "Cartera"
-)
+@Table(name= "carteras")
+@PrimaryKeyJoinColumn(name = "cartera_id")
 public class Cartera {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +40,8 @@ public class Cartera {
 //    )
 //    private Float TIR;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 //    @JoinColumn(
 //            name = "idUsuario",
 //            nullable = false,
@@ -48,7 +52,7 @@ public class Cartera {
 //                    name="usuariodFK"
 //            )
 //    )
-    private User userId;
+    private User user;
 
     @OneToMany
     private List<Factura> facturas = new ArrayList<>();
@@ -97,12 +101,12 @@ public class Cartera {
 //        this.TIR = TIR;
 //    }
 
-    public User getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(User idUsuario) {
-        this.userId = idUsuario;
+    public void setUser(User idUsuario) {
+        this.user = idUsuario;
     }
 
     public List<Factura> getFacturas() {

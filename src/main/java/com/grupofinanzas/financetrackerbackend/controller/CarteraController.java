@@ -26,7 +26,7 @@ public class CarteraController {
         return carteraService.getAllCarterasByUserId(userid).stream().map(this::convertToResource).collect(Collectors.toList());
     }
 
-    @GetMapping
+    @GetMapping("/{userid}/carteras/{carteraid}")
     public CarteraResource getCarteraByIdAndUserId(@PathVariable Long userid,@PathVariable Long carteraid){
         Optional<Cartera> cartera = carteraService.getCarteraByIdAndByUserId(userid,carteraid);
         return cartera.map(this::convertToResource).orElse(null);

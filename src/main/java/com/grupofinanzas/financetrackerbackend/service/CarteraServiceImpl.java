@@ -24,7 +24,7 @@ public class CarteraServiceImpl implements CarteraService {
     public Cartera createCarteraByUserId(Long userId, Cartera cartera) {
         return userRepository.findById(userId).map(
                         user -> {
-                            cartera.setUserId(user);
+                            cartera.setUser(user);
 //                            cartera.setTotalCostoInicial(0.0F);
                             cartera.setTotalCostoFinal(0.0F);
 //                            cartera.setTIR(0.0F);
