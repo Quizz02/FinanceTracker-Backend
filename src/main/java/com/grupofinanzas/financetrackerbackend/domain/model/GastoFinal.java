@@ -3,9 +3,8 @@ package com.grupofinanzas.financetrackerbackend.domain.model;
 import javax.persistence.*;
 
 @Entity
-@Table(
-        name="GastoFinal"
-)
+@Table(name="Gasto_Final")
+@PrimaryKeyJoinColumn(name = "gastoFinal_id")
 public class GastoFinal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,11 +13,11 @@ public class GastoFinal {
     private Float monto;
     private String motivo;
     @ManyToOne
-    private Factura idFactura;
+    private Factura factura;
     @ManyToOne
-    private Letra idLetra;
+    private Letra letra;
     @ManyToOne
-    private ReciboHonorario idrecibo;
+    private ReciboHonorario recibo;
 
     public Long getId() {
         return id;
@@ -44,27 +43,27 @@ public class GastoFinal {
         this.motivo = motivo;
     }
 
-    public Factura getIdFactura() {
-        return idFactura;
+    public Factura getFactura() {
+        return factura;
     }
 
-    public void setIdFactura(Factura idFactura) {
-        this.idFactura = idFactura;
+    public void setFactura(Factura idFactura) {
+        this.factura = idFactura;
     }
 
-    public Letra getIdLetra() {
-        return idLetra;
+    public Letra getLetra() {
+        return letra;
     }
 
-    public void setIdLetra(Letra idLetra) {
-        this.idLetra = idLetra;
+    public void setLetra(Letra idLetra) {
+        this.letra = idLetra;
     }
 
-    public ReciboHonorario getIdrecibo() {
-        return idrecibo;
+    public ReciboHonorario getRecibo() {
+        return recibo;
     }
 
-    public void setIdrecibo(ReciboHonorario idrecibo) {
-        this.idrecibo = idrecibo;
+    public void setRecibo(ReciboHonorario idrecibo) {
+        this.recibo = idrecibo;
     }
 }

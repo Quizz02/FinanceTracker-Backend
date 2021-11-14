@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name= "carteras")
+@Table(name= "Cartera")
 @PrimaryKeyJoinColumn(name = "cartera_id")
 public class Cartera {
     @Id

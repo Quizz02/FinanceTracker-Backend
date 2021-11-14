@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name= "Factura")
+@Table(name = "Factura")
+@PrimaryKeyJoinColumn(name = "factura_id")
 public class Factura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,33 +16,33 @@ public class Factura {
     private Date fechaEmision;
     private Date fechaPago;
     private String nombreEmisor;
-    private Float valorNominal;
-    private Float valorEntregado;
-    private Float valorRecibido;
-    private Float valorNeto;
+    private Float valorNominal;//output
+    private Float valorEntregado;//output
+    private Float valorRecibido;//output
+    private Float valorNeto;//output
     private Float retencion;
     private boolean moneda;
     private Float TEP;
     private Float TDP;
-    private Float TCEA;
-    private Integer dias; //calculo fechaemison pago
-    private Float totalGastoInicial;
-    private Float totalGastoFinal;
-    private Float totalGastoDescontada;
-    @ManyToOne
-    private Cartera idcartera;
+    private Float TCEA;//output
+    private Integer diasTranscurridos; //calculo fechaemison pago
+    private Float totalGastoInicial;//calculo de las instancias de la clase gastoinicial
+    private Float totalGastoFinal;//calculo de las instancias de la clase gastofinal
+    private Float totalGastoDescontado;//nose que es esto xd
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Cartera cartera;
     @OneToOne
-    private Tasa idtasa;
+    private Tasa tasa;
     @OneToMany(
             cascade = {CascadeType.PERSIST,CascadeType.REMOVE},
             fetch = FetchType.LAZY
     )
-    private List<GastoFinal> GastoFinal = new ArrayList<>();
+    private List<GastoFinal> gastosFinales = new ArrayList<>();
     @OneToMany(
             cascade = {CascadeType.PERSIST,CascadeType.REMOVE},
             fetch = FetchType.LAZY
     )
-    private List<GastoInicial> gasto_Iniciales = new ArrayList<>();
+    private List<GastoInicial> gastosIniciales = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -147,12 +148,12 @@ public class Factura {
         this.TCEA = TCEA;
     }
 
-    public Integer getDias() {
-        return dias;
+    public Integer getDiasTranscurridos() {
+        return diasTranscurridos;
     }
 
-    public void setDias(Integer dias) {
-        this.dias = dias;
+    public void setDiasTranscurridos(Integer dias) {
+        this.diasTranscurridos = dias;
     }
 
     public Float getTotalGastoInicial() {
@@ -171,43 +172,43 @@ public class Factura {
         this.totalGastoFinal = totalGastoFinal;
     }
 
-    public Float getTotalGastoDescontada() {
-        return totalGastoDescontada;
+    public Float getTotalGastoDescontado() {
+        return totalGastoDescontado;
     }
 
-    public void setTotalGastoDescontada(Float totalGastoDescontada) {
-        this.totalGastoDescontada = totalGastoDescontada;
+    public void setTotalGastoDescontado(Float totalGastoDescontada) {
+        this.totalGastoDescontado = totalGastoDescontada;
     }
 
-    public Cartera getIdcartera() {
-        return idcartera;
+    public Cartera getCartera() {
+        return cartera;
     }
 
-    public void setIdcartera(Cartera idcartera) {
-        this.idcartera = idcartera;
+    public void setCartera(Cartera idcartera) {
+        this.cartera = idcartera;
     }
 
-    public Tasa getIdtasa() {
-        return idtasa;
+    public Tasa getTasa() {
+        return tasa;
     }
 
-    public void setIdtasa(Tasa idtasa) {
-        this.idtasa = idtasa;
+    public void setTasa(Tasa idtasa) {
+        this.tasa = idtasa;
     }
 
-    public List<GastoFinal> getGasto_Final() {
-        return GastoFinal;
+    public List<GastoFinal> getGastosFinales() {
+        return gastosFinales;
     }
 
-    public void setGasto_Final(List<GastoFinal> gasto_Final) {
-        GastoFinal = gasto_Final;
+    public void setGastosFinales(List<GastoFinal> gastosFinales) {
+        this.gastosFinales = gastosFinales;
     }
 
-    public List<GastoInicial> getGasto_Iniciales() {
-        return gasto_Iniciales;
+    public List<GastoInicial> getGastosIniciales() {
+        return gastosIniciales;
     }
 
-    public void setGasto_Iniciales(List<GastoInicial> gasto_Iniciales) {
-        this.gasto_Iniciales = gasto_Iniciales;
+    public void setGastosIniciales(List<GastoInicial> gastosIniciales) {
+        this.gastosIniciales = gastosIniciales;
     }
 }

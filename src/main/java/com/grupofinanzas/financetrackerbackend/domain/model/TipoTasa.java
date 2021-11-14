@@ -4,9 +4,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(
-        name= "TipoTasa"
-)
+@Table(name = "Tipo_Tasa")
+@PrimaryKeyJoinColumn(name = "tipoTasa_id")
 public class TipoTasa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
