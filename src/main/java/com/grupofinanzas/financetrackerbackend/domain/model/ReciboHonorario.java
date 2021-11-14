@@ -1,5 +1,7 @@
 package com.grupofinanzas.financetrackerbackend.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -29,7 +31,9 @@ public class ReciboHonorario {
     private Float totalGastoInicial;//mismo que factura
     private Float totalGastoFinal;//mismo que factura
     private Float totalGastoDescontada;//ni idea de pa que sirve
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cartera_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Cartera cartera;
     @OneToOne
     private Tasa tasa;

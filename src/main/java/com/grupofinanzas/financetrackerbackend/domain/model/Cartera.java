@@ -54,11 +54,11 @@ public class Cartera {
 //    )
     private User user;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Factura> facturas = new ArrayList<>();
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<ReciboHonorario> reciboHonorarios = new ArrayList<>();
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Letra> letras = new ArrayList<>();
 
     public Long getIdCartera() {
