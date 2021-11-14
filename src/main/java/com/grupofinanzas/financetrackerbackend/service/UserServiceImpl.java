@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,6 +38,25 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<?> deleteUser(Long userid) {
         User user = userRepository.findById(userid)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "Id", userid));
+
+        //TODO validar que todas las clases dependientes de usuario sean eliminadas antes que esta
+        //Ejemplo de como hacerlo:
+//
+//        List<Province> provinceList = provinceRepository.findAllByRegionId(regionId);
+//
+//        if (provinceList!=null){
+//            for(Province province: provinceList){
+//                Long provinceId = province.getId();
+//                List<District> districtList = districtRepository.findAllByProvinceId(provinceId);
+//                if(districtList!=null){
+//                    for (District district: districtList){
+//                        districtRepository.delete(district);
+//                    }
+//                }
+//                provinceRepository.delete(province);
+//            }
+//        }
+
         userRepository.delete(user);
         return ResponseEntity.ok().build();
     }

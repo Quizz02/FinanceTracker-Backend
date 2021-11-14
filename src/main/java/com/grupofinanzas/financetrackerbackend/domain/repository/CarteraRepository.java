@@ -1,7 +1,6 @@
 package com.grupofinanzas.financetrackerbackend.domain.repository;
 
 import com.grupofinanzas.financetrackerbackend.domain.model.Cartera;
-import com.grupofinanzas.financetrackerbackend.domain.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

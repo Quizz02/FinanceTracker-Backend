@@ -1,8 +1,10 @@
 package com.grupofinanzas.financetrackerbackend.service;
 
 import com.grupofinanzas.financetrackerbackend.domain.model.Cartera;
-import com.grupofinanzas.financetrackerbackend.domain.repository.CarteraRepository;
-import com.grupofinanzas.financetrackerbackend.domain.repository.UserRepository;
+import com.grupofinanzas.financetrackerbackend.domain.model.Factura;
+import com.grupofinanzas.financetrackerbackend.domain.model.Letra;
+import com.grupofinanzas.financetrackerbackend.domain.model.ReciboHonorario;
+import com.grupofinanzas.financetrackerbackend.domain.repository.*;
 import com.grupofinanzas.financetrackerbackend.domain.service.CarteraService;
 import com.grupofinanzas.financetrackerbackend.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,12 @@ public class CarteraServiceImpl implements CarteraService {
     private UserRepository userRepository;
     @Autowired
     private CarteraRepository carteraRepository;
+    @Autowired
+    private FacturaRepository facturaRepository;
+    @Autowired
+    private LetraRepository letraRepository;
+    @Autowired
+    private ReciboRepository reciboRepository;
 
 
     @Override
@@ -65,13 +73,27 @@ public class CarteraServiceImpl implements CarteraService {
             );
         }
 
-//        List<District> districtList = districtRepository.findAllByProvinceId(provinceId);
-//
-//        if(districtList!=null){
-//            for (District district:districtList){
-//                districtRepository.delete(district);
-//            }
-//        }
+        List<Factura> facturaList = facturaRepository.findAllByCarteraIdCartera(carteraId);
+        List<Letra> letraList = letraRepository.findAllByCarteraIdCartera(carteraId);
+        List<ReciboHonorario> reciboHonorarioList = reciboRepository.findAllByCarteraIdCartera(carteraId);
+
+        if(facturaList!=null){
+            for (Factura factura:facturaList){
+                facturaRepository.delete(factura);
+            }
+        }
+
+        if(letraList!=null){
+            for (Letra letra:letraList){
+                letraRepository.delete(letra);
+            }
+        }
+
+        if(reciboHonorarioList!=null){
+            for (ReciboHonorario reciboHonorario:reciboHonorarioList){
+                reciboRepository.delete(reciboHonorario);
+            }
+        }
 
         return carteraRepository.findById(carteraId).map(
                 cartera -> {

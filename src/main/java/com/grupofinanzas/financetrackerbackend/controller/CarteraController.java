@@ -38,7 +38,7 @@ public class CarteraController {
         return convertToResource(carteraService.createCarteraByUserId(userid,cartera));
     }
 
-    @DeleteMapping("{userid}/carteras/{carteraid}")
+    @DeleteMapping("/{userid}/carteras/{carteraid}")
     public ResponseEntity<?> deleteCartera(@PathVariable Long userid, @PathVariable Long carteraid){
         return carteraService.deleteCartera(userid,carteraid);
     }
