@@ -53,6 +53,7 @@ public class UserController {
     private User convertToEntity(SaveUserResource resource) {
         return mapper.map(resource, User.class);
     }
+
     private UserResource convertToResource(User entity) {
         return mapper.map(entity, UserResource.class);
     }

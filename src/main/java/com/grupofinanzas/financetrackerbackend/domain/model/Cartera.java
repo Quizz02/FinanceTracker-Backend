@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name= "carteras")
+@Table(name= "Cartera")
 @PrimaryKeyJoinColumn(name = "cartera_id")
 public class Cartera {
     @Id
@@ -54,11 +54,11 @@ public class Cartera {
 //    )
     private User user;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Factura> facturas = new ArrayList<>();
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<ReciboHonorario> reciboHonorarios = new ArrayList<>();
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Letra> letras = new ArrayList<>();
 
     public Long getIdCartera() {

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "User")
 @PrimaryKeyJoinColumn(name = "user_id")
 public class User {
     @Id
@@ -25,9 +25,7 @@ public class User {
     private String password;
     @NotNull
     private String email;
-    @OneToMany(
-            fetch = FetchType.LAZY
-    )
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Cartera> Cartera = new ArrayList<>();
 
     public Long getId() {

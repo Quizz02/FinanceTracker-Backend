@@ -3,10 +3,8 @@ package com.grupofinanzas.financetrackerbackend.domain.model;
 import javax.persistence.*;
 
 @Entity
-@Table(
-        name= "PlazoTasa"
-)
-
+@Table(name = "Plazo_Tasa")
+@PrimaryKeyJoinColumn(name = "plazoTasa_id")
 public class PlazoTasa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

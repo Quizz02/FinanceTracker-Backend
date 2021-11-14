@@ -5,9 +5,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(
-        name= "Tasa"
-)
+@Table(name = "Tasa")
+@PrimaryKeyJoinColumn(name = "tasa_id")
 public class Tasa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
