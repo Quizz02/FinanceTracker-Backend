@@ -13,4 +13,5 @@ public interface LetraService {
     Optional<Letra> getLetraByIdAndCarteraId(Long carteraId, Long letraId);
     Letra updateLetra(Long carteraId, Long letraId, Letra letra);
     ResponseEntity<?> deleteLetra(Long carteraId, Long letraId);
+
 }

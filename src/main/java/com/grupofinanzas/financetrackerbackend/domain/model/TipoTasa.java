@@ -2,6 +2,8 @@ package com.grupofinanzas.financetrackerbackend.domain.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Tipo_Tasa")
@@ -13,6 +15,11 @@ public class TipoTasa {
     private Long id; //1 nominal 2 efectiva
     @NotNull
     private String nombrePlazo;
+    @OneToMany(
+            cascade = {CascadeType.PERSIST,CascadeType.REMOVE},
+            fetch = FetchType.LAZY
+    )
+    private List<Tasa> Tasas = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -29,4 +36,14 @@ public class TipoTasa {
     public void setNombrePlazo(String nombrePlazo) {
         this.nombrePlazo = nombrePlazo;
     }
+
+    public List<Tasa> getTasas() {
+        return Tasas;
+    }
+
+
+    public void setTasas(List<Tasa> tasas) {
+        this.Tasas = tasas;
+    }
+
 }

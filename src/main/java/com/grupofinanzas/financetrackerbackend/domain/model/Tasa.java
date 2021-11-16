@@ -1,6 +1,8 @@
 package com.grupofinanzas.financetrackerbackend.domain.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -15,9 +17,13 @@ public class Tasa {
     private Date fechaDescuento;
     private Integer diasAnio;
     private Float valor; /*valor de la tasa*/
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "plazo_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private PlazoTasa idPlazoTasa;
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "tipo_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private TipoTasa idTipoTasa;
 
     public Long getId() {

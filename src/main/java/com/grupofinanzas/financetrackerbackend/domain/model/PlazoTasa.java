@@ -1,6 +1,9 @@
 package com.grupofinanzas.financetrackerbackend.domain.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "Plazo_Tasa")
@@ -11,7 +14,13 @@ public class PlazoTasa {
     @Column(name = "id", nullable = false)
     private Long id;
     private String nombre;
-    private Integer plazo;
+    private Date plazo;
+
+    @OneToMany(
+            cascade = {CascadeType.PERSIST,CascadeType.REMOVE},
+            fetch = FetchType.LAZY
+    )
+    private List<Tasa> Tasas = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -29,11 +38,19 @@ public class PlazoTasa {
         this.nombre = nombre;
     }
 
-    public Integer getPlazo() {
+    public Date getPlazo() {
         return plazo;
     }
 
-    public void setPlazo(Integer plazo) {
+    public void setPlazo(Date plazo) {
         this.plazo = plazo;
+    }
+
+    public List<Tasa> getTasas() {
+        return Tasas;
+    }
+
+    public void setTasas(List<Tasa> tasas) {
+        this.Tasas = tasas;
     }
 }
