@@ -1,8 +1,10 @@
 package com.grupofinanzas.financetrackerbackend.service;
 
 import com.grupofinanzas.financetrackerbackend.domain.model.Factura;
+import com.grupofinanzas.financetrackerbackend.domain.model.PlazoTasa;
 import com.grupofinanzas.financetrackerbackend.domain.repository.CarteraRepository;
 import com.grupofinanzas.financetrackerbackend.domain.repository.FacturaRepository;
+import com.grupofinanzas.financetrackerbackend.domain.repository.PlazoTasaRepository;
 import com.grupofinanzas.financetrackerbackend.domain.service.FacturaService;
 import com.grupofinanzas.financetrackerbackend.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,22 +20,33 @@ public class FacturaServiceImpl implements FacturaService {
     private CarteraRepository carteraRepository;
     @Autowired
     private FacturaRepository facturaRepository;
+    @Autowired
+    private PlazoTasaRepository plazoTasaRepository;
 
 
     @Override
-    public Factura createFacturaByCarteraId(Long carteraId, Factura factura) {
-        return carteraRepository.findById(carteraId).map(
-                cartera -> {
-                    factura.setCartera(cartera);
-                    factura.setFechaEmision(factura.getFechaEmision());
-                    factura.setFechaPago(factura.getFechaPago());
-                    factura.setTotalFacturado(factura.getTotalFacturado());
-                    factura.setRetencion(factura.getRetencion());
-                    factura.setNombreEmisor(factura.getNombreEmisor());
-                    factura.setMoneda(factura.getMoneda());
-                    return facturaRepository.save(factura);
-                }
-        ).orElseThrow(()-> new ResourceNotFoundException(
+    public Factura createFacturaByCarteraId(Long carteraId, Long plazotasaId,  Factura factura) {
+         return carteraRepository.findById(carteraId).map(
+                cartera -> { return plazoTasaRepository.findById(plazotasaId).map(
+                        plazoTasa -> {
+                            factura.setidCartera(cartera);
+                            factura.setidPlazoTasa(plazoTasa);
+                            factura.setFechaEmision(factura.getFechaEmision());
+                            factura.setFechaPago(factura.getFechaPago());
+                            factura.setTotalFacturado(factura.getTotalFacturado());
+                            factura.setRetencion(factura.getRetencion());
+                            factura.setNombreEmisor(factura.getNombreEmisor());
+                            factura.setMoneda(factura.getMoneda());
+                            factura.setFechaDescuento(factura.getFechaDescuento());
+                            factura.setDiasAnio(factura.getDiasAnio());
+                            factura.setValor(factura.getValor());
+                            factura.setTipotasa(factura.getTipotasa());
+                            return facturaRepository.save(factura);
+                        }
+                ).orElseThrow(()->new ResourceNotFoundException(
+                        "PlazoTasa","Id",plazotasaId
+                ));
+                }).orElseThrow(()-> new ResourceNotFoundException(
                 "Cartera","Id", carteraId
         ));
     }
@@ -66,6 +79,7 @@ public class FacturaServiceImpl implements FacturaService {
             factura1.setValorRecibido(factura.getValorRecibido());
             factura1.setValorEntregado(factura.getValorEntregado());
             factura1.setTCEA(factura.getTCEA());
+            factura1.setTEA(factura.getTEA());
             return facturaRepository.save(factura1);
         }).orElseThrow(()-> new ResourceNotFoundException(
                 "Factura", "Id", facturaId
@@ -85,5 +99,10 @@ public class FacturaServiceImpl implements FacturaService {
                     return ResponseEntity.ok().build();
                 }
         ).orElseThrow(() -> new ResourceNotFoundException("factura", "Id",facturaId ));
+    }
+
+    @Override
+    public Optional<Factura> getFacturaById(Long facturaid) {
+        return facturaRepository.findById(facturaid);
     }
 }

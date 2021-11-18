@@ -1,38 +1,46 @@
 package com.grupofinanzas.financetrackerbackend.resource.factura;
 
+import com.grupofinanzas.financetrackerbackend.domain.model.PlazoTasa;
+
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class SaveFacturaResource {
-    private Date fechaEmision;
-    private Date fechaPago;
+    private LocalDate fechaEmision;
+    private LocalDate fechaPago;
     private String nombreEmisor;
     private Float totalFacturado;
-    private Float valorEntregado;
-    private Float valorRecibido;
-    private Float valorNeto;
+    private Float valorEntregado;//output
+    private Float valorRecibido;//output
+    private Float valorNeto;//output
     private Float retencion;
     private boolean moneda;
-    private Float TEP;
-    private Float TDP;
-    private Float TCEA;
-    private Integer diasTranscurridos;
-    private Float totalGastoInicial;
-    private Float totalGastoFinal;
-    private Float totalGastoDescontado;
+    private Float TEP;//output
+    private Float TDP;//output
+    private Float TCEA;//output
+    private Integer diasTranscurridos; //calculo fechaemison pago
+    private Float totalGastoInicial;//calculo de las instancias de la clase gastoinicial
+    private Float totalGastoFinal;//calculo de las instancias de la clase gastofinal
+    private Float totalGastoDescontado;//nose que es esto xd
+    private LocalDate fechaDescuento;
+    private Integer diasAnio;
+    private Float valor; /*valor de la tasa*/
+    private Float TEA;
+    private boolean tipotasa;
 
-    public Date getFechaEmision() {
+    public LocalDate getFechaEmision() {
         return fechaEmision;
     }
 
-    public void setFechaEmision(Date fechaEmision) {
+    public void setFechaEmision(LocalDate fechaEmision) {
         this.fechaEmision = fechaEmision;
     }
 
-    public Date getFechaPago() {
+    public LocalDate getFechaPago() {
         return fechaPago;
     }
 
-    public void setFechaPago(Date fechaPago) {
+    public void setFechaPago(LocalDate fechaPago) {
         this.fechaPago = fechaPago;
     }
 
@@ -48,8 +56,8 @@ public class SaveFacturaResource {
         return totalFacturado;
     }
 
-    public void setTotalFacturado(Float totalFacturado) {
-        this.totalFacturado = totalFacturado;
+    public void setTotalFacturado(Float valorNominal) {
+        this.totalFacturado = valorNominal;
     }
 
     public Float getValorEntregado() {
@@ -84,7 +92,7 @@ public class SaveFacturaResource {
         this.retencion = retencion;
     }
 
-    public boolean isMoneda() {
+    public boolean getMoneda() {
         return moneda;
     }
 
@@ -120,8 +128,8 @@ public class SaveFacturaResource {
         return diasTranscurridos;
     }
 
-    public void setDiasTranscurridos(Integer diasTranscurridos) {
-        this.diasTranscurridos = diasTranscurridos;
+    public void setDiasTranscurridos(Integer dias) {
+        this.diasTranscurridos = dias;
     }
 
     public Float getTotalGastoInicial() {
@@ -144,7 +152,47 @@ public class SaveFacturaResource {
         return totalGastoDescontado;
     }
 
-    public void setTotalGastoDescontado(Float totalGastoDescontado) {
-        this.totalGastoDescontado = totalGastoDescontado;
+    public void setTotalGastoDescontado(Float totalGastoDescontada) {
+        this.totalGastoDescontado = totalGastoDescontada;
+    }
+
+    public LocalDate getFechaDescuento() {
+        return fechaDescuento;
+    }
+
+    public void setFechaDescuento(LocalDate fechaDescuento) {
+        this.fechaDescuento = fechaDescuento;
+    }
+
+    public Integer getDiasAnio() {
+        return diasAnio;
+    }
+
+    public void setDiasAnio(Integer diasAnio) {
+        this.diasAnio = diasAnio;
+    }
+
+    public Float getValor() {
+        return valor;
+    }
+
+    public void setValor(Float valor) {
+        this.valor = valor;
+    }
+
+    public boolean getTipotasa() {
+        return tipotasa;
+    }
+
+    public void setTipotasa(boolean tipotasa) {
+        this.tipotasa = tipotasa;
+    }
+
+    public Float getTEA() {
+        return TEA;
+    }
+
+    public void setTEA(Float TEA) {
+        this.TEA = TEA;
     }
 }

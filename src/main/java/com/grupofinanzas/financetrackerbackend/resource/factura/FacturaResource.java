@@ -1,25 +1,44 @@
 package com.grupofinanzas.financetrackerbackend.resource.factura;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.grupofinanzas.financetrackerbackend.domain.model.Cartera;
+import com.grupofinanzas.financetrackerbackend.domain.model.GastoFinal;
+import com.grupofinanzas.financetrackerbackend.domain.model.GastoInicial;
+import com.grupofinanzas.financetrackerbackend.domain.model.PlazoTasa;
+import com.grupofinanzas.financetrackerbackend.resource.plazotasa.PlazoTasaResource;
+
+import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FacturaResource {
     private Long id;
-    private Date fechaEmision;
-    private Date fechaPago;
-    private String nombreEmisor;
-    private Float totalFacturado;
-    private Float valorEntregado;
-    private Float valorRecibido;
-    private Float valorNeto;
-    private Float retencion;
-    private boolean moneda;
-    private Float TEP;
-    private Float TDP;
-    private Float TCEA;
-    private Integer diasTranscurridos;
-    private Float totalGastoInicial;
-    private Float totalGastoFinal;
-    private Float totalGastoDescontado;
+    private LocalDate fechaEmision; //input FE
+    private LocalDate fechaPago; //input FP
+    private String nombreEmisor; // interno name
+    private Float totalFacturado;//input TF
+    private Float valorEntregado;//output VE
+    private Float valorRecibido;//output VR
+    private Float valorNeto;//output Vnet
+    private Float retencion; //input Rt
+    private boolean moneda; //input 1 dolar 0 sol
+    private Float TEP;//output TE
+    private Float TDP;//output d
+    private Float TCEA;//output TCEA
+    private Integer diasTranscurridos; //calculo fechaemison pago ND
+    private Float totalGastoInicial;//calculo de las instancias de la clase gastoinicial
+    private Float totalGastoFinal;//calculo de las instancias de la clase gastofinal
+    private Float totalGastoDescontado;// output D
+    private LocalDate fechaDescuento; // input FD
+    private Integer diasAnio; //input 360 o 365 DA
+    private Float valor; /*input valor de la tasa TE,TEA */
+    private Float TEA; //output Tasa efectiva anual, calculo de la tasa si es nominal, copia si es efectiva
+    private boolean tipotasa; //0 efectiva 1 nominal
+
+
 
     public Long getId() {
         return id;
@@ -29,19 +48,19 @@ public class FacturaResource {
         this.id = id;
     }
 
-    public Date getFechaEmision() {
+    public LocalDate getFechaEmision() {
         return fechaEmision;
     }
 
-    public void setFechaEmision(Date fechaEmision) {
+    public void setFechaEmision(LocalDate fechaEmision) {
         this.fechaEmision = fechaEmision;
     }
 
-    public Date getFechaPago() {
+    public LocalDate getFechaPago() {
         return fechaPago;
     }
 
-    public void setFechaPago(Date fechaPago) {
+    public void setFechaPago(LocalDate fechaPago) {
         this.fechaPago = fechaPago;
     }
 
@@ -57,8 +76,8 @@ public class FacturaResource {
         return totalFacturado;
     }
 
-    public void setTotalFacturado(Float totalFacturado) {
-        this.totalFacturado = totalFacturado;
+    public void setTotalFacturado(Float valorNominal) {
+        this.totalFacturado = valorNominal;
     }
 
     public Float getValorEntregado() {
@@ -93,7 +112,7 @@ public class FacturaResource {
         this.retencion = retencion;
     }
 
-    public boolean isMoneda() {
+    public boolean getMoneda() {
         return moneda;
     }
 
@@ -129,8 +148,8 @@ public class FacturaResource {
         return diasTranscurridos;
     }
 
-    public void setDiasTranscurridos(Integer diasTranscurridos) {
-        this.diasTranscurridos = diasTranscurridos;
+    public void setDiasTranscurridos(Integer dias) {
+        this.diasTranscurridos = dias;
     }
 
     public Float getTotalGastoInicial() {
@@ -153,7 +172,48 @@ public class FacturaResource {
         return totalGastoDescontado;
     }
 
-    public void setTotalGastoDescontado(Float totalGastoDescontado) {
-        this.totalGastoDescontado = totalGastoDescontado;
+    public void setTotalGastoDescontado(Float totalGastoDescontada) {
+        this.totalGastoDescontado = totalGastoDescontada;
     }
+
+    public LocalDate getFechaDescuento() {
+        return fechaDescuento;
+    }
+
+    public void setFechaDescuento(LocalDate fechaDescuento) {
+        this.fechaDescuento = fechaDescuento;
+    }
+
+    public Integer getDiasAnio() {
+        return diasAnio;
+    }
+
+    public void setDiasAnio(Integer diasAnio) {
+        this.diasAnio = diasAnio;
+    }
+
+    public Float getValor() {
+        return valor;
+    }
+
+    public void setValor(Float valor) {
+        this.valor = valor;
+    }
+
+    public boolean getTipotasa() {
+        return tipotasa;
+    }
+
+    public void setTipotasa(boolean tipotasa) {
+        this.tipotasa = tipotasa;
+    }
+
+    public Float getTEA() {
+        return TEA;
+    }
+
+    public void setTEA(Float TEA) {
+        this.TEA = TEA;
+    }
+
 }

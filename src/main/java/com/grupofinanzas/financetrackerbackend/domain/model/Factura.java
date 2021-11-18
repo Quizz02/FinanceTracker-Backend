@@ -1,9 +1,11 @@
 package com.grupofinanzas.financetrackerbackend.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,28 +17,38 @@ public class Factura {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-    private Date fechaEmision;
-    private Date fechaPago;
-    private String nombreEmisor;
-    private Float totalFacturado;
-    private Float valorEntregado;//output
-    private Float valorRecibido;//output
-    private Float valorNeto;//output
-    private Float retencion;
-    private boolean moneda;
-    private Float TEP;//output
-    private Float TDP;//output
-    private Float TCEA;//output
-    private Integer diasTranscurridos; //calculo fechaemison pago
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private LocalDate fechaEmision; //input FE
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private LocalDate fechaPago; //input FP
+    private String nombreEmisor; // interno name
+    private Float totalFacturado; //input TF
+    private Float valorEntregado;//output VE
+    private Float valorRecibido;//output VR
+    private Float valorNeto;//output Vnet
+    private Float retencion; //input Rt
+    private boolean moneda; //input 1 dolar 0 sol
+    private Float TEP;//output TE
+    private Float TDP;//output d
+    private Float TCEA;//output TCEA
+    private Integer diasTranscurridos; ///calculo fechaemison pago ND
     private Float totalGastoInicial;//calculo de las instancias de la clase gastoinicial
     private Float totalGastoFinal;//calculo de las instancias de la clase gastofinal
-    private Float totalGastoDescontado;//nose que es esto xd
-    @ManyToOne(fetch = FetchType.LAZY)
+    private Float totalGastoDescontado;// output D
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private LocalDate fechaDescuento;// input ºFD
+    private Integer diasAnio; //input 360 o 365 DA
+    private Float valor; /*input valor de la tasa TE,TEA */
+    private Float TEA; //output Tasa efectiva anual, calculo de la tasa si es nominal, copia si es efectiva
+    private boolean tipotasa;  //0 efectiva 1 nominal
+    @ManyToOne
+    @JoinColumn(name = "plazo_id",nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private PlazoTasa plazoTasa;  // dias del plazo P
+    @ManyToOne
     @JoinColumn(name = "cartera_id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Cartera cartera;
-    @OneToOne
-    private Tasa tasa;
     @OneToMany(
             cascade = {CascadeType.PERSIST,CascadeType.REMOVE},
             fetch = FetchType.LAZY
@@ -56,19 +68,19 @@ public class Factura {
         this.id = id;
     }
 
-    public Date getFechaEmision() {
+    public LocalDate getFechaEmision() {
         return fechaEmision;
     }
 
-    public void setFechaEmision(Date fechaEmision) {
+    public void setFechaEmision(LocalDate fechaEmision) {
         this.fechaEmision = fechaEmision;
     }
 
-    public Date getFechaPago() {
+    public LocalDate getFechaPago() {
         return fechaPago;
     }
 
-    public void setFechaPago(Date fechaPago) {
+    public void setFechaPago(LocalDate fechaPago) {
         this.fechaPago = fechaPago;
     }
 
@@ -184,21 +196,14 @@ public class Factura {
         this.totalGastoDescontado = totalGastoDescontada;
     }
 
-    public Cartera getCartera() {
+    public Cartera getidCartera() {
         return cartera;
     }
 
-    public void setCartera(Cartera idcartera) {
+    public void setidCartera(Cartera idcartera) {
         this.cartera = idcartera;
     }
 
-    public Tasa getTasa() {
-        return tasa;
-    }
-
-    public void setTasa(Tasa idtasa) {
-        this.tasa = idtasa;
-    }
 
     public List<GastoFinal> getGastosFinales() {
         return gastosFinales;
@@ -216,4 +221,51 @@ public class Factura {
         this.gastosIniciales = gastosIniciales;
     }
 
+    public LocalDate getFechaDescuento() {
+        return fechaDescuento;
+    }
+
+    public void setFechaDescuento(LocalDate fechaDescuento) {
+        this.fechaDescuento = fechaDescuento;
+    }
+
+    public Integer getDiasAnio() {
+        return diasAnio;
+    }
+
+    public void setDiasAnio(Integer diasAnio) {
+        this.diasAnio = diasAnio;
+    }
+
+    public Float getValor() {
+        return valor;
+    }
+
+    public void setValor(Float valor) {
+        this.valor = valor;
+    }
+
+    public PlazoTasa getidPlazoTasa() {
+        return plazoTasa;
+    }
+
+    public void setidPlazoTasa(PlazoTasa plazoTasa) {
+        this.plazoTasa = plazoTasa;
+    }
+
+    public boolean getTipotasa() {
+        return tipotasa;
+    }
+
+    public void setTipotasa(boolean tipotasa) {
+        this.tipotasa = tipotasa;
+    }
+
+    public Float getTEA() {
+        return TEA;
+    }
+
+    public void setTEA(Float TEA) {
+        this.TEA = TEA;
+    }
 }
