@@ -15,17 +15,10 @@ public class GastoFinal {
     private Float monto;
     private String motivo;
     @ManyToOne
-    @JoinColumn(name = "factura_id", nullable = false)
+    @JoinColumn(name = "factura_id",nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Factura factura;
-    @ManyToOne
-    @JoinColumn(name = "letra_id", nullable = false)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private Letra letra;
-    @ManyToOne
-    @JoinColumn(name = "recibo_id", nullable = false)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private ReciboHonorario recibo;
+
 
     public Long getId() {
         return id;
@@ -59,19 +52,4 @@ public class GastoFinal {
         this.factura = idFactura;
     }
 
-    public Letra getLetra() {
-        return letra;
-    }
-
-    public void setLetra(Letra idLetra) {
-        this.letra = idLetra;
-    }
-
-    public ReciboHonorario getRecibo() {
-        return recibo;
-    }
-
-    public void setRecibo(ReciboHonorario idrecibo) {
-        this.recibo = idrecibo;
-    }
 }

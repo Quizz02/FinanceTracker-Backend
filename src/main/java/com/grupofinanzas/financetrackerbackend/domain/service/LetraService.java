@@ -8,10 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface LetraService {
-    Letra createLetraByCarteraId(Long carteraId, Letra letra);
+    Letra createLetraByCarteraId(Long carteraId,Long plazotasaId,Letra letra);
     List<Letra> getAllLetrasByCarteraId(Long carteraId);
     Optional<Letra> getLetraByIdAndCarteraId(Long carteraId, Long letraId);
     Letra updateLetra(Long carteraId, Long letraId, Letra letra);
     ResponseEntity<?> deleteLetra(Long carteraId, Long letraId);
+    Optional<Letra> getLetraById(Long letraid);
 
 }

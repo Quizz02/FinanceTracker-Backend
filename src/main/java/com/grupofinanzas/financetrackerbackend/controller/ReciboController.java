@@ -1,7 +1,9 @@
 package com.grupofinanzas.financetrackerbackend.controller;
 
+import com.grupofinanzas.financetrackerbackend.domain.model.Factura;
 import com.grupofinanzas.financetrackerbackend.domain.model.ReciboHonorario;
 import com.grupofinanzas.financetrackerbackend.domain.service.ReciboService;
+import com.grupofinanzas.financetrackerbackend.resource.factura.FacturaResource;
 import com.grupofinanzas.financetrackerbackend.resource.recibo.ReciboResource;
 import com.grupofinanzas.financetrackerbackend.resource.recibo.SaveReciboResource;
 import org.modelmapper.ModelMapper;
@@ -32,10 +34,10 @@ public class ReciboController {
         return reciboHonorario.map(this::convertToResource).orElse(null);
     }
 
-    @PostMapping("/{carteraid}/recibos")
-    public ReciboResource createRecibo(@PathVariable Long carteraid, @RequestBody SaveReciboResource reciboResource){
+    @PostMapping("/{carteraid}/recibos/{plazotasaid}")
+    public ReciboResource createRecibo(@PathVariable Long carteraid,@PathVariable Long plazotasaid, @RequestBody SaveReciboResource reciboResource){
         ReciboHonorario reciboHonorario = convertToEntity(reciboResource);
-        return convertToResource(reciboService.createReciboByCarteraId(carteraid,reciboHonorario));
+        return convertToResource(reciboService.createReciboByCarteraId(carteraid,plazotasaid,reciboHonorario));
     }
 
     @DeleteMapping("/{carteraid}/recibos/{reciboid}")
@@ -48,6 +50,13 @@ public class ReciboController {
         ReciboHonorario reciboHonorario = convertToEntity(reciboResource);
         return convertToResource(reciboService.updateRecibo(carteraid,reciboid,reciboHonorario));
     }
+
+    @GetMapping("/recibos/{id}")
+    public ReciboResource getReciboById(@PathVariable Long id){
+        Optional<ReciboHonorario> reciboHonorario=reciboService.getReciboById(id);
+        return  reciboHonorario.map(this::convertToResource).orElse(null);
+    }
+
 
     private ReciboHonorario convertToEntity(SaveReciboResource resource){ return mapper.map(resource, ReciboHonorario.class);}
 

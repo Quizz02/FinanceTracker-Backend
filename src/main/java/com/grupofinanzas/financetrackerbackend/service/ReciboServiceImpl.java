@@ -2,6 +2,7 @@ package com.grupofinanzas.financetrackerbackend.service;
 
 import com.grupofinanzas.financetrackerbackend.domain.model.ReciboHonorario;
 import com.grupofinanzas.financetrackerbackend.domain.repository.CarteraRepository;
+import com.grupofinanzas.financetrackerbackend.domain.repository.PlazoTasaRepository;
 import com.grupofinanzas.financetrackerbackend.domain.repository.ReciboRepository;
 import com.grupofinanzas.financetrackerbackend.domain.service.ReciboService;
 import com.grupofinanzas.financetrackerbackend.exception.ResourceNotFoundException;
@@ -18,22 +19,33 @@ public class ReciboServiceImpl implements ReciboService {
     private CarteraRepository carteraRepository;
     @Autowired
     private ReciboRepository reciboRepository;
-
+    @Autowired
+    private PlazoTasaRepository plazoTasaRepository;
 
     @Override
-    public ReciboHonorario createReciboByCarteraId(Long carteraId, ReciboHonorario reciboHonorario) {
+    public ReciboHonorario createReciboByCarteraId(Long carteraId, Long plazotasaId, ReciboHonorario reciboHonorario) {
         return carteraRepository.findById(carteraId).map(
-                cartera -> {
-                    reciboHonorario.setCartera(cartera);
-                    reciboHonorario.setFechaEmision(reciboHonorario.getFechaEmision());
-                    reciboHonorario.setFechaPago(reciboHonorario.getFechaPago());
-                    reciboHonorario.setTotalRecibir(reciboHonorario.getTotalRecibir());
-                    reciboHonorario.setRetencion(reciboHonorario.getRetencion());
-                    reciboHonorario.setNombreEmisor(reciboHonorario.getNombreEmisor());
-                    reciboHonorario.setMoneda(reciboHonorario.getMoneda());
-                    return reciboRepository.save(reciboHonorario);
-                }
-        ).orElseThrow(()-> new ResourceNotFoundException(
+                cartera -> { return plazoTasaRepository.findById(plazotasaId).map(
+                        plazoTasa -> {
+                            reciboHonorario.setCartera(cartera);
+                            reciboHonorario.setPlazoTasa(plazoTasa);
+                            reciboHonorario.setFechaEmision(reciboHonorario.getFechaEmision());
+                            reciboHonorario.setFechaPago(reciboHonorario.getFechaPago());
+                            reciboHonorario.setTotalRecibir(reciboHonorario.getTotalRecibir());
+                            reciboHonorario.setRetencion(reciboHonorario.getRetencion());
+                            reciboHonorario.setNombreEmisor(reciboHonorario.getNombreEmisor());
+                            reciboHonorario.setMoneda(reciboHonorario.getMoneda());
+                            reciboHonorario.setFechaDescuento(reciboHonorario.getFechaDescuento());
+                            reciboHonorario.setDiasAnio(reciboHonorario.getDiasAnio());
+                            reciboHonorario.setValor(reciboHonorario.getValor());
+                            reciboHonorario.setTipotasa(reciboHonorario.isTipotasa());
+                            return reciboRepository.save(reciboHonorario);
+                        }
+                ).orElseThrow(()-> new ResourceNotFoundException(
+                        "PlazoTasa","Id",plazotasaId
+                ));
+
+                }).orElseThrow(()-> new ResourceNotFoundException(
                 "Cartera","Id", carteraId
         ));
     }
@@ -66,6 +78,7 @@ public class ReciboServiceImpl implements ReciboService {
             reciboHonorario1.setValorRecibido(reciboHonorario.getValorRecibido());
             reciboHonorario1.setValorEntregado(reciboHonorario.getValorEntregado());
             reciboHonorario1.setTCEA(reciboHonorario.getTCEA());
+            reciboHonorario1.setTEA(reciboHonorario.getTEA());
             return reciboRepository.save(reciboHonorario1);
         }).orElseThrow(()-> new ResourceNotFoundException(
                 "Recibo", "Id", reciboId
@@ -85,5 +98,10 @@ public class ReciboServiceImpl implements ReciboService {
                     return ResponseEntity.ok().build();
                 }
         ).orElseThrow(() -> new ResourceNotFoundException("recibo", "Id",reciboId ));
+    }
+
+    @Override
+    public Optional<ReciboHonorario> getReciboById(long reciboid) {
+        return reciboRepository.findById(reciboid);
     }
 }

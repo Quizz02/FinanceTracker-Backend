@@ -1,25 +1,41 @@
 package com.grupofinanzas.financetrackerbackend.resource.recibo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.grupofinanzas.financetrackerbackend.domain.model.Cartera;
+import com.grupofinanzas.financetrackerbackend.domain.model.GastoFinal;
+import com.grupofinanzas.financetrackerbackend.domain.model.GastoInicial;
+import com.grupofinanzas.financetrackerbackend.domain.model.PlazoTasa;
+
+import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReciboResource {
     private Long id;
-    private Date fechaEmision;
-    private Date fechaPago;
-    private String nombreEmisor;
-    private Float totalRecibir;
-    private Float valorEntregado;
-    private Float valorRecibido;
-    private Float valorNeto;
-    private Float retencion;
-    private boolean moneda;
-    private Float TEP;
-    private Float TDP;
-    private Float TCEA;
-    private Integer diasTranscurridos;
-    private Float totalGastoInicial;
-    private Float totalGastoFinal;
-    private Float totalGastoDescontado;
+    private LocalDate fechaEmision; //FE input
+    private LocalDate fechaPago;  //FP input
+    private String nombreEmisor; //interno
+    private Float totalRecibir; // TR input
+    private Float valorEntregado;//output VE
+    private Float valorRecibido;//output VR
+    private Float valorNeto;//output Vnet
+    private Float retencion; //Rt input
+    private boolean moneda; // 0 sol 1 dolar input
+    private Float TEP;//output TE
+    private Float TDP;//output d
+    private Float TCEA;//output TCEA
+    private Integer diasTranscurridos;//calculo fechaemision y pago
+    private Float totalGastoInicial;//mismo que factura
+    private Float totalGastoFinal;//mismo que factura
+    private Float totalGastoDescontado;//ni idea de pa que sirve
+    private LocalDate fechaDescuento;// input ºFD
+    private Integer diasAnio; //input 360 o 365 DA
+    private Float valor; /*input valor de la tasa TE,TEA */
+    private Float TEA; //output Tasa efectiva anual, calculo de la tasa si es nominal, copia si es efectiva
+    private boolean tipotasa;  //0 efectiva 1 nominal
 
     public Long getId() {
         return id;
@@ -29,19 +45,19 @@ public class ReciboResource {
         this.id = id;
     }
 
-    public Date getFechaEmision() {
+    public LocalDate getFechaEmision() {
         return fechaEmision;
     }
 
-    public void setFechaEmision(Date fechaEmision) {
+    public void setFechaEmision(LocalDate fechaEmision) {
         this.fechaEmision = fechaEmision;
     }
 
-    public Date getFechaPago() {
+    public LocalDate getFechaPago() {
         return fechaPago;
     }
 
-    public void setFechaPago(Date fechaPago) {
+    public void setFechaPago(LocalDate fechaPago) {
         this.fechaPago = fechaPago;
     }
 
@@ -57,8 +73,8 @@ public class ReciboResource {
         return totalRecibir;
     }
 
-    public void setTotalRecibir(Float totalRecibir) {
-        this.totalRecibir = totalRecibir;
+    public void setTotalRecibir(Float valorNominal) {
+        this.totalRecibir = valorNominal;
     }
 
     public Float getValorEntregado() {
@@ -93,7 +109,7 @@ public class ReciboResource {
         this.retencion = retencion;
     }
 
-    public boolean isMoneda() {
+    public boolean getMoneda() {
         return moneda;
     }
 
@@ -129,8 +145,8 @@ public class ReciboResource {
         return diasTranscurridos;
     }
 
-    public void setDiasTranscurridos(Integer diasTranscurridos) {
-        this.diasTranscurridos = diasTranscurridos;
+    public void setDiasTranscurridos(Integer dias) {
+        this.diasTranscurridos = dias;
     }
 
     public Float getTotalGastoInicial() {
@@ -153,7 +169,48 @@ public class ReciboResource {
         return totalGastoDescontado;
     }
 
-    public void setTotalGastoDescontado(Float totalGastoDescontado) {
-        this.totalGastoDescontado = totalGastoDescontado;
+    public void setTotalGastoDescontado(Float totalGastoDescontada) {
+        this.totalGastoDescontado = totalGastoDescontada;
     }
+
+    public LocalDate getFechaDescuento() {
+        return fechaDescuento;
+    }
+
+    public void setFechaDescuento(LocalDate fechaDescuento) {
+        this.fechaDescuento = fechaDescuento;
+    }
+
+    public Integer getDiasAnio() {
+        return diasAnio;
+    }
+
+    public void setDiasAnio(Integer diasAnio) {
+        this.diasAnio = diasAnio;
+    }
+
+    public Float getValor() {
+        return valor;
+    }
+
+    public void setValor(Float valor) {
+        this.valor = valor;
+    }
+
+    public Float getTEA() {
+        return TEA;
+    }
+
+    public void setTEA(Float TEA) {
+        this.TEA = TEA;
+    }
+
+    public boolean isTipotasa() {
+        return tipotasa;
+    }
+
+    public void setTipotasa(boolean tipotasa) {
+        this.tipotasa = tipotasa;
+    }
+
 }

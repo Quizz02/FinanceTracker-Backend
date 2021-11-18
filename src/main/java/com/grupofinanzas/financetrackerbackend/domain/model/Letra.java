@@ -1,9 +1,11 @@
 package com.grupofinanzas.financetrackerbackend.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,28 +17,39 @@ public class Letra {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-    private Date fechaGiro;
-    private Date fechaVencimiento;
-    private String nombreEmisor;
-    private Float valorNominal;
-    private Float valorEntregado;//output
-    private Float valorRecibido;//output
-    private Float valorNeto;//output
-    private Float retencion;
-    private boolean moneda;
-    private Float TEP;//output
-    private Float TDP;//output
-    private Float TCEA;//output
-    private Integer diasTranscurridos; //calculo fechaemision y pago
-    private Float totalGastoInicial;//mismo que factura
-    private Float totalGastoFinal;//mismo que factura
-    private Float totalGastoDescontado;//nose que es esto xd
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private LocalDate fechaGiro; // FG fecha de giro input
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private LocalDate fechaVencimiento; // FV fecha de vencimiento input
+    private String nombreEmisor; // interno
+    private Float valorNominal; // Vnom input
+    private Float valorEntregado;//output VE
+    private Float valorRecibido;//output VR
+    private Float valorNeto;//output  Vnet
+    private Float retencion; //Rt input
+    private boolean moneda; // 0 sol 1 dolar input
+    private Float TEP;//output TE
+    private Float TDP;//output d
+    private Float TCEA;//output TCEA
+    private Integer diasTranscurridos; //calculo fechaemision y pago ND output
+    private Float totalGastoInicial;//mismo que factura interno
+    private Float totalGastoFinal;//mismo que factura interno
+    private Float totalGastoDescontado;// D output
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private LocalDate fechaDescuento;// input ºFD
+    private Integer diasAnio; //input 360 o 365 DA
+    private Float valor; /*input valor de la tasa TE,TEA */
+    private Float TEA; //output Tasa efectiva anual, calculo de la tasa si es nominal, copia si es efectiva
+    private boolean tipotasa;  //0 efectiva 1 nominal
+    @ManyToOne
+    @JoinColumn(name = "plazo_id",nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private PlazoTasa plazoTasa;  // dias del plazo P
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cartera_id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Cartera cartera;
-    @OneToOne
-    private Tasa tasa;
+
     @OneToMany(
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
             fetch = FetchType.LAZY
@@ -56,19 +69,19 @@ public class Letra {
         this.id = id;
     }
 
-    public Date getFechaGiro() {
+    public LocalDate getFechaGiro() {
         return fechaGiro;
     }
 
-    public void setFechaGiro(Date fechaEmision) {
+    public void setFechaGiro(LocalDate fechaEmision) {
         this.fechaGiro = fechaEmision;
     }
 
-    public Date getFechaVencimiento() {
+    public LocalDate getFechaVencimiento() {
         return fechaVencimiento;
     }
 
-    public void setFechaVencimiento(Date fechaPago) {
+    public void setFechaVencimiento(LocalDate fechaPago) {
         this.fechaVencimiento = fechaPago;
     }
 
@@ -192,13 +205,6 @@ public class Letra {
         this.cartera = idcartera;
     }
 
-    public Tasa getTasa() {
-        return tasa;
-    }
-
-    public void setTasa(Tasa idtasa) {
-        this.tasa = idtasa;
-    }
 
     public List<GastoFinal> getGasto_Final() {
         return gastosFinales;
@@ -222,5 +228,53 @@ public class Letra {
 
     public void setGastosFinales(List<GastoFinal> gastosFinales) {
         this.gastosFinales = gastosFinales;
+    }
+
+    public LocalDate getFechaDescuento() {
+        return fechaDescuento;
+    }
+
+    public void setFechaDescuento(LocalDate fechaDescuento) {
+        this.fechaDescuento = fechaDescuento;
+    }
+
+    public Integer getDiasAnio() {
+        return diasAnio;
+    }
+
+    public void setDiasAnio(Integer diasAnio) {
+        this.diasAnio = diasAnio;
+    }
+
+    public Float getValor() {
+        return valor;
+    }
+
+    public void setValor(Float valor) {
+        this.valor = valor;
+    }
+
+    public Float getTEA() {
+        return TEA;
+    }
+
+    public void setTEA(Float TEA) {
+        this.TEA = TEA;
+    }
+
+    public boolean isTipotasa() {
+        return tipotasa;
+    }
+
+    public void setTipotasa(boolean tipotasa) {
+        this.tipotasa = tipotasa;
+    }
+
+    public PlazoTasa getPlazoTasa() {
+        return plazoTasa;
+    }
+
+    public void setPlazoTasa(PlazoTasa plazoTasa) {
+        this.plazoTasa = plazoTasa;
     }
 }

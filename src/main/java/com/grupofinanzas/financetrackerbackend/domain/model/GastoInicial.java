@@ -1,5 +1,7 @@
 package com.grupofinanzas.financetrackerbackend.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,11 +15,10 @@ public class GastoInicial {
         private Float monto;
         private String motivo;
         @ManyToOne
+        @JoinColumn(name = "factura_id",nullable = false)
+        @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
         private Factura factura;
-        @ManyToOne
-        private Letra letra;
-        @ManyToOne
-        private ReciboHonorario recibo;
+
 
         public Long getId() {
                 return id;
@@ -51,19 +52,4 @@ public class GastoInicial {
                 this.factura = idFactura;
         }
 
-        public Letra getLetra() {
-                return letra;
-        }
-
-        public void setLetra(Letra idLetra) {
-                this.letra = idLetra;
-        }
-
-        public ReciboHonorario getRecibo() {
-                return recibo;
-        }
-
-        public void setRecibo(ReciboHonorario idrecibo) {
-                this.recibo = idrecibo;
-        }
 }

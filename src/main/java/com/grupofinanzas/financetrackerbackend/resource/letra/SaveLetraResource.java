@@ -1,39 +1,63 @@
 package com.grupofinanzas.financetrackerbackend.resource.letra;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.grupofinanzas.financetrackerbackend.domain.model.Cartera;
+import com.grupofinanzas.financetrackerbackend.domain.model.GastoFinal;
+import com.grupofinanzas.financetrackerbackend.domain.model.GastoInicial;
+import com.grupofinanzas.financetrackerbackend.domain.model.PlazoTasa;
+
+import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SaveLetraResource {
-    private Date fechaGiro;
-    private Date fechaVencimiento;
-    private String nombreEmisor;
-    private Float valorNominal;
-    private Float valorEntregado;
-    private Float valorRecibido;
-    private Float valorNeto;
-    private Float retencion;
-    private boolean moneda;
-    private Float TEP;
-    private Float TDP;
-    private Float TCEA;
-    private Integer diasTranscurridos;
-    private Float totalGastoInicial;
-    private Float totalGastoFinal;
-    private Float totalGastoDescontado;
+    private Long id;
+    private LocalDate fechaGiro; // FG fecha de giro input
+    private LocalDate fechaVencimiento; // FV fecha de vencimiento input
+    private String nombreEmisor; // interno
+    private Float valorNominal; // Vnom input
+    private Float valorEntregado;//output VE
+    private Float valorRecibido;//output VR
+    private Float valorNeto;//output  Vnet
+    private Float retencion; //Rt input
+    private boolean moneda; // 0 sol 1 dolar input
+    private Float TEP;//output TE
+    private Float TDP;//output d
+    private Float TCEA;//output TCEA
+    private Integer diasTranscurridos; //calculo fechaemision y pago ND output
+    private Float totalGastoInicial;//mismo que factura interno
+    private Float totalGastoFinal;//mismo que factura interno
+    private Float totalGastoDescontado;//nose que es esto xd D output
+    private LocalDate fechaDescuento;// input ºFD
+    private Integer diasAnio; //input 360 o 365 DA
+    private Float valor; /*input valor de la tasa TE,TEA */
+    private Float TEA; //output Tasa efectiva anual, calculo de la tasa si es nominal, copia si es efectiva
+    private boolean tipotasa;  //0 efectiva 1 nominal
 
-    public Date getFechaGiro() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalDate getFechaGiro() {
         return fechaGiro;
     }
 
-    public void setFechaGiro(Date fechaGiro) {
-        this.fechaGiro = fechaGiro;
+    public void setFechaGiro(LocalDate fechaEmision) {
+        this.fechaGiro = fechaEmision;
     }
 
-    public Date getFechaVencimiento() {
+    public LocalDate getFechaVencimiento() {
         return fechaVencimiento;
     }
 
-    public void setFechaVencimiento(Date fechaVencimiento) {
-        this.fechaVencimiento = fechaVencimiento;
+    public void setFechaVencimiento(LocalDate fechaPago) {
+        this.fechaVencimiento = fechaPago;
     }
 
     public String getNombreEmisor() {
@@ -84,7 +108,7 @@ public class SaveLetraResource {
         this.retencion = retencion;
     }
 
-    public boolean isMoneda() {
+    public boolean getMoneda() {
         return moneda;
     }
 
@@ -120,8 +144,8 @@ public class SaveLetraResource {
         return diasTranscurridos;
     }
 
-    public void setDiasTranscurridos(Integer diasTranscurridos) {
-        this.diasTranscurridos = diasTranscurridos;
+    public void setDiasTranscurridos(Integer dias) {
+        this.diasTranscurridos = dias;
     }
 
     public Float getTotalGastoInicial() {
@@ -144,7 +168,48 @@ public class SaveLetraResource {
         return totalGastoDescontado;
     }
 
-    public void setTotalGastoDescontado(Float totalGastoDescontado) {
-        this.totalGastoDescontado = totalGastoDescontado;
+    public void setTotalGastoDescontado(Float totalGastoDescontada) {
+        this.totalGastoDescontado = totalGastoDescontada;
     }
+
+    public LocalDate getFechaDescuento() {
+        return fechaDescuento;
+    }
+
+    public void setFechaDescuento(LocalDate fechaDescuento) {
+        this.fechaDescuento = fechaDescuento;
+    }
+
+    public Integer getDiasAnio() {
+        return diasAnio;
+    }
+
+    public void setDiasAnio(Integer diasAnio) {
+        this.diasAnio = diasAnio;
+    }
+
+    public Float getValor() {
+        return valor;
+    }
+
+    public void setValor(Float valor) {
+        this.valor = valor;
+    }
+
+    public Float getTEA() {
+        return TEA;
+    }
+
+    public void setTEA(Float TEA) {
+        this.TEA = TEA;
+    }
+
+    public boolean isTipotasa() {
+        return tipotasa;
+    }
+
+    public void setTipotasa(boolean tipotasa) {
+        this.tipotasa = tipotasa;
+    }
+
 }

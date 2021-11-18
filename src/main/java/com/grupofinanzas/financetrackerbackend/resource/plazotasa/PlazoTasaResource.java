@@ -1,12 +1,9 @@
 package com.grupofinanzas.financetrackerbackend.resource.plazotasa;
 
-import java.util.Date;
-
 public class PlazoTasaResource {
-
     private Long id;
     private String nombre;
-    private Date plazo;
+    private Integer plazo;
 
     public Long getId() {
         return id;
@@ -24,11 +21,11 @@ public class PlazoTasaResource {
         this.nombre = nombre;
     }
 
-    public Date getPlazo() {
+    public Integer getPlazo() {
         return plazo;
     }
 
-    public void setPlazo(Date plazo) {
+    public void setPlazo(Integer plazo) {
         this.plazo = plazo;
     }
 

@@ -3,6 +3,7 @@ package com.grupofinanzas.financetrackerbackend.service;
 import com.grupofinanzas.financetrackerbackend.domain.model.Letra;
 import com.grupofinanzas.financetrackerbackend.domain.repository.CarteraRepository;
 import com.grupofinanzas.financetrackerbackend.domain.repository.LetraRepository;
+import com.grupofinanzas.financetrackerbackend.domain.repository.PlazoTasaRepository;
 import com.grupofinanzas.financetrackerbackend.domain.service.LetraService;
 import com.grupofinanzas.financetrackerbackend.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,22 +19,33 @@ public class LetraServiceImpl implements LetraService {
     private CarteraRepository carteraRepository;
     @Autowired
     private LetraRepository letraRepository;
-
+    @Autowired
+    private PlazoTasaRepository plazoTasaRepository;
 
     @Override
-    public Letra createLetraByCarteraId(Long carteraId, Letra letra) {
+    public Letra createLetraByCarteraId(Long carteraId, Long plazotasaId, Letra letra) {
         return carteraRepository.findById(carteraId).map(
                 cartera -> {
-                    letra.setCartera(cartera);
-                    letra.setFechaGiro(letra.getFechaGiro());
-                    letra.setFechaVencimiento(letra.getFechaVencimiento());
-                    letra.setValorNominal(letra.getValorNominal());
-                    letra.setRetencion(letra.getRetencion());
-                    letra.setNombreEmisor(letra.getNombreEmisor());
-                    letra.setMoneda(letra.getMoneda());
-                    return letraRepository.save(letra);
-                }
-        ).orElseThrow(()-> new ResourceNotFoundException(
+                    return plazoTasaRepository.findById(plazotasaId).map(
+                            plazoTasa -> {
+                                letra.setCartera(cartera);
+                                letra.setPlazoTasa(plazoTasa);
+                                letra.setFechaGiro(letra.getFechaGiro());
+                                letra.setFechaVencimiento(letra.getFechaVencimiento());
+                                letra.setValorNominal(letra.getValorNominal());
+                                letra.setRetencion(letra.getRetencion());
+                                letra.setNombreEmisor(letra.getNombreEmisor());
+                                letra.setMoneda(letra.getMoneda());
+                                letra.setFechaDescuento(letra.getFechaDescuento());
+                                letra.setDiasAnio(letra.getDiasAnio());
+                                letra.setValor(letra.getValor());
+                                letra.setTipotasa(letra.isTipotasa());
+                                return letraRepository.save(letra);
+                            }
+                    ).orElseThrow(() -> new ResourceNotFoundException(
+                            "PlazoTasa", "Id", plazotasaId
+                    ));
+                }).orElseThrow(()-> new ResourceNotFoundException(
                 "Cartera","Id", carteraId
         ));
     }
@@ -66,6 +78,7 @@ public class LetraServiceImpl implements LetraService {
             letra1.setValorRecibido(letra.getValorRecibido());
             letra1.setValorEntregado(letra.getValorEntregado());
             letra1.setTCEA(letra.getTCEA());
+            letra1.setTEA(letra.getTEA());
             return letraRepository.save(letra1);
         }).orElseThrow(()-> new ResourceNotFoundException(
                 "Letra", "Id", letraId
@@ -85,5 +98,10 @@ public class LetraServiceImpl implements LetraService {
                     return ResponseEntity.ok().build();
                 }
         ).orElseThrow(() -> new ResourceNotFoundException("letra", "Id",letraId ));
+    }
+
+    @Override
+    public Optional<Letra> getLetraById(Long letraid) {
+        return letraRepository.findById(letraid);
     }
 }

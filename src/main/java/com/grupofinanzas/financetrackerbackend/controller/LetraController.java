@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,10 +33,10 @@ public class LetraController {
         return letra.map(this::convertToResource).orElse(null);
     }
 
-    @PostMapping("/{carteraid}/letras")
-    public LetraResource createLetra(@PathVariable Long carteraid, @RequestBody SaveLetraResource letraResource){
+    @PostMapping("/{carteraid}/letras/{plazotasaid}")
+    public LetraResource createLetra(@PathVariable Long carteraid, @PathVariable Long plazotasaid,@RequestBody SaveLetraResource letraResource){
         Letra letra = convertToEntity(letraResource);
-        return convertToResource(letraService.createLetraByCarteraId(carteraid,letra));
+        return convertToResource(letraService.createLetraByCarteraId(carteraid,plazotasaid,letra));
     }
 
     @DeleteMapping("/{carteraid}/letras/{letraid}")
@@ -47,6 +48,12 @@ public class LetraController {
     public LetraResource updateLetra(@PathVariable Long carteraid,@PathVariable Long letraid,@RequestBody SaveLetraResource letraResource){
         Letra letra = convertToEntity(letraResource);
         return convertToResource(letraService.updateLetra(carteraid,letraid,letra));
+    }
+
+    @GetMapping("/letras/{id}")
+    public LetraResource getLetraById(@PathVariable Long id){
+        Optional<Letra> letra = letraService.getLetraById(id);
+        return letra.map(this::convertToResource).orElse(null);
     }
 
     private Letra convertToEntity(SaveLetraResource resource){

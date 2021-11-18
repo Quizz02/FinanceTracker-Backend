@@ -32,10 +32,10 @@ public class FacturaController {
         return factura.map(this::convertToResource).orElse(null);
     }
 
-    @PostMapping("/{carteraid}/facturas")
-    public FacturaResource createFactura(@PathVariable Long carteraid, @RequestBody SaveFacturaResource facturaResource){
-        Factura factura = convertToEntity(facturaResource);
-        return convertToResource(facturaService.createFacturaByCarteraId(carteraid,factura));
+    @PostMapping("/{carteraid}/facturas/{plazotasaid}")
+    public FacturaResource createFactura(@PathVariable Long carteraid, @PathVariable Long plazotasaid, @RequestBody SaveFacturaResource resource){
+        Factura factura = convertToEntity(resource);
+        return convertToResource(facturaService.createFacturaByCarteraId(carteraid,plazotasaid,factura));
     }
 
     @DeleteMapping("/{carteraid}/facturas/{facturaid}")
@@ -47,6 +47,12 @@ public class FacturaController {
     public FacturaResource updateFactura(@PathVariable Long carteraid,@PathVariable Long facturaid,@RequestBody SaveFacturaResource facturaResource){
         Factura factura = convertToEntity(facturaResource);
         return convertToResource(facturaService.updateFactura(carteraid,facturaid,factura));
+    }
+
+    @GetMapping("/facturas/{id}")
+    public FacturaResource getFacturaById(@PathVariable Long id){
+        Optional<Factura> factura=facturaService.getFacturaById(id);
+        return  factura.map(this::convertToResource).orElse(null);
     }
 
     private Factura convertToEntity(SaveFacturaResource resource){
