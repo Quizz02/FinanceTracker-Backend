@@ -70,6 +70,7 @@ public class FacturaServiceImpl implements FacturaService {
 
         return facturaRepository.findById(facturaId).map(factura1 -> {
             factura1.setDiasTranscurridos(factura.getDiasTranscurridos());
+            factura1.setNombreEmisor(factura.getNombreEmisor());
             factura1.setTEP(factura.getTEP());
             factura1.setTDP(factura.getTDP());
             factura1.setTotalGastoInicial(factura.getTotalGastoInicial());

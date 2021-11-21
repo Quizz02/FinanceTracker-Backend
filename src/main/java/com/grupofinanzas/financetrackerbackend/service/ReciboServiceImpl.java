@@ -69,6 +69,7 @@ public class ReciboServiceImpl implements ReciboService {
 
         return reciboRepository.findById(reciboId).map(reciboHonorario1 -> {
             reciboHonorario1.setDiasTranscurridos(reciboHonorario.getDiasTranscurridos());
+            reciboHonorario1.setNombreEmisor(reciboHonorario.getNombreEmisor());
             reciboHonorario1.setTEP(reciboHonorario.getTEP());
             reciboHonorario1.setTDP(reciboHonorario.getTDP());
             reciboHonorario1.setTotalGastoInicial(reciboHonorario.getTotalGastoInicial());

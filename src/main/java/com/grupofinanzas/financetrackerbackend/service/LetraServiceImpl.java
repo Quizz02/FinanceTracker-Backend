@@ -68,6 +68,7 @@ public class LetraServiceImpl implements LetraService {
             );
 
         return letraRepository.findById(letraId).map(letra1 -> {
+            letra1.setNombreEmisor(letra.getNombreEmisor());
             letra1.setDiasTranscurridos(letra.getDiasTranscurridos());
             letra1.setTEP(letra.getTEP());
             letra1.setTDP(letra.getTDP());
