@@ -12,5 +12,4 @@ public interface UserService {
     User updateUser(Long userid, User userdetails);
     ResponseEntity<?> deleteUser(Long userid);
     Optional<User> getUserById(Long userid);
-
 }
